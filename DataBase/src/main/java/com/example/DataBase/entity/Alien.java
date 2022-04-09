@@ -23,11 +23,18 @@ public class Alien {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="")
+	@Column(name="ID")
 	private int id;
+	
+	@Column(name="NAME")
 	private String name;
+	
+	@Column(name="AGE")
 	private int age;
+	
+	@Column(name="NUM")
 	private String num;
+	
 	public int getId() {
 		return id;
 	}

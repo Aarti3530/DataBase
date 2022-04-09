@@ -9,40 +9,45 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.DataBase.dao.AliensRepo;
 import com.example.DataBase.entity.Alien;
 
-@Controller
+@RestController
 public class HomeController {
 	
 	@Autowired
 	private AliensRepo repo;
 	
 	@RequestMapping("/")
-	public String home() {
-		return "home.jsp";
+	public ModelAndView home() {
+		ModelAndView mav = new ModelAndView("home.jsp");
+	    return mav;
 	}
 	
 	@GetMapping("getAlien")
-	public String getAlien(@RequestParam int id,Model m) {
-		m.addAttribute("aliens",repo.getById(id));
-		return "result.jsp";
+	public ModelAndView getAlien(@RequestParam int id,ModelAndView m) {
+		m.addObject("aliens",repo.getById(id));
+		m.setViewName("result.jsp");
+		return m;
 	}
 	
 	@GetMapping("all")
-	@ResponseBody
 	public List<Alien> all(){
 		List<Alien> list = repo.findAll();
 		return list;
 	}
 	
-	@PostMapping("addAlien")
-	@ResponseBody
-	public Alien add(@RequestBody Alien a) {
-	    return repo.save(a);
+	
+	@GetMapping("/addAlien")
+	public Alien add(Alien a) {
+		repo.save(a);
+	    return a;
 	}
 
 }
